@@ -20,8 +20,12 @@ class Planet:
     def set_time(self, specified_time):
         current_time = specified_time
     
-    def rotate(self, timestep, num_steps):
-        shine(self, how_long, user)
-        convect(self, how_long, user)
-        glow(self, how_long, user)
-        display(self, how_long, user)
+    def rotate(self, user):
+        shine(self, user)
+        convect(self, user)
+        glow(self, user)
+        display(self, user)
+        
+    def display(self, user)
+    
+    def shine(self, user)
