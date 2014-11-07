@@ -1,9 +1,6 @@
 from datetime import datetime
 
-
-
 class Planet:
-
   length_of_year_in_days = 365.25
   ecc = 0.0167
   inclination_deg = -23.44
