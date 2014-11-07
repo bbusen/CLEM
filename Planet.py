@@ -14,6 +14,14 @@ class Planet:
     def __init__(self, name, specified_time):
         self.name = name
         self.region_list = []
+        self.longitude = [
+          0, 0, 120, -120,
+          0, 36, 72, 108, 144, 180, -144, -108, -72, -36,
+          0, 36, 72, 108, 144, 180, -144, -108, -72, -36,
+          0, 36, 72, 108, 144, 180, -144, -108, -72, -36,
+          0, 36, 72, 108, 144, 180, -144, -108, -72, -36,
+          0, 120, -120, 0]
+        self.latitude = []
         self.current_time = specified_time
         self.solar_declination = -asin()
         
