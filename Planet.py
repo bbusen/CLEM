@@ -1,4 +1,5 @@
 from datetime import datetime
+import numpy as np
 
 class Planet:
   length_of_year_in_days = 365.25
@@ -28,14 +29,13 @@ class Planet:
           -18.75, -18.75, -18.75, -18.75, -18.75, -18.75, -18.75, -18.75, -18.75, -18.75,
           -56.25, -56.25, -56.25, -56.25, -56.25, -56.25, -56.25, -56.25, -56.25, -56.25,
           -80.625, -80.625, -80.625, -90])
-        self.current_time = specified_time
-        self.solar_declination = -asin()
-        
+        set_time(specified_time)
+
     def set_time(self, specified_time):
         current_time = specified_time
         decimal_hour = current_time.hour + current_time.minute * 60 + current_time.second * 3600
         decimal_day = current_time.timetuple().yday + decimal_hour / 24
-        hour_angle = 2 * pi * (decimal_hour - longitude / rotation_speed) / 24)
+        hour_angle = np.multiply((2 * pi / 24), np.divide(np.subtract(decimal_hour, longitude), rotation_speed))
         solar_declination = -asin(
           sin(radians(inclination_deg) * 
           cos(2 * (decimal_day + winter_solstice_offset) / length_of_year_in_days + 
@@ -51,8 +51,8 @@ class Planet:
     def display(self, user)
     
     def shine(self, user)
-      solar_elevation = asin(
-        (cos(hour_angle) * cos(radians(latitude))) * cos(solar_declination) +
-        sin(solar_declination) * sin(radians(latitude)) )
+      solar_elevation = np.asin(np.add(
+        np.multiply(np.multiply(np.cos(hour_angle), np.cos(np.radians(latitude))), cos(solar_declination)),
+        np.multiply(sin(solar_declination), np.sin(np.radians(latitude)))) )
       np.clip(solar_elevation, 0, pi, out=solar_elevation)
-      solar_energy = solar_constant * sin(solar_elevation) * user.timestep * 3600
+      solar_energy = np.multiply((solar_constant * user.timestep * 3600), np.sin(solar_elevation))
