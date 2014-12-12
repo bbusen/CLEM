@@ -1,6 +1,6 @@
 from datetime import datetime
 import numpy as np
-import json, io
+import json, io, sys, select
 
 class Planet:
   length_of_year_in_days = 365.25
@@ -58,6 +58,9 @@ class Planet:
       for i in range(num_cells):
         print repr(latitude[i]).rjust (6), repr(longitude[i]).rjust(6), repr(solar_energy[i]).rjust(6)
       print '\n'
+      i, o, e = select.select( [sys.stdin], [], [], 4 ) #Four seconds
+      if (i):
+        user.paused = True
     
     def shine(self, user):
       solar_elevation = np.asin(np.add(
