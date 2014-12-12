@@ -1,5 +1,6 @@
 from datetime import datetime
 import numpy as np
+import json, io
 
 class Planet:
   length_of_year_in_days = 365.25
@@ -48,12 +49,15 @@ class Planet:
         convect(self, user)
         glow(self, user)
         display(self, user)
-        if user.Paused:
+        if user.paused:
+          with open('planet.txt', 'w') as outfile:
+            json.dump(jsonData, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
           break
         
     def display(self, user):
       for i in range(num_cells):
         print repr(latitude[i]).rjust (6), repr(longitude[i]).rjust(6), repr(solar_energy[i]).rjust(6)
+      print '\n'
     
     def shine(self, user):
       solar_elevation = np.asin(np.add(
