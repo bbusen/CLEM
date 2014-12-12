@@ -11,6 +11,7 @@ class Planet:
   rotation_speed = 15 # degrees per hour
   winter_solstice_offset = 10 # used to find declination (latitude) of sun
   perigee_offset = -2
+  num_cells = 48
 
     def __init__(self, name, specified_time):
         self.name = name
@@ -43,12 +44,17 @@ class Planet:
               )))
     
     def rotate(self, user):
+      while True:
         shine(self, user)
         convect(self, user)
         glow(self, user)
         display(self, user)
+        if user.Paused:
+          break
         
-    def display(self, user)
+    def display(self, user):
+      for i in range(num_cells):
+        print repr(latitude[i]).rjust (6), repr(longitude[i].rjust(6), solar_energy[i]
     
     def shine(self, user)
       solar_elevation = np.asin(np.add(
