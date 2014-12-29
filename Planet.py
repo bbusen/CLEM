@@ -68,10 +68,12 @@ class Planet:
 #                    indent = 4, ensure_ascii=False)
         
   def display(self, user):
+    self.oldlat = 90
     for i in range(self.num_cells):
-      print repr(self.latitude[i]).rjust (6), \
-            repr(self.longitude[i]).rjust(6), \
-            repr(round(self.solar_energy[i], 2)).rjust(6)
+      if self.latitude[i] != self.oldlat:
+        print '\n'
+        self.oldlat = self.latitude[i]
+      print '{0:6.2f}'.format(self.solar_energy[i] / 1000000),
     print '\n'
     
   def shine(self, user):
