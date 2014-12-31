@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import numpy as np
 import json, io, sys, select, pdb, math
 
@@ -12,6 +12,7 @@ class Planet:
   rotation_speed = 15 # degrees per hour
   winter_solstice_offset = 10 # used to find declination (latitude) of sun
   perigee_offset = -2
+  noon_offset = 12
   num_cells = 48
 
   def __init__(self, specified_time = current_time):
@@ -36,38 +37,38 @@ class Planet:
 
   def set_time(self, specified_time):
     self.current_time = specified_time
-    decimal_hour = (self.current_time.hour + self.current_time.minute * 60 +
-                    self.current_time.second * 3600)
-    decimal_day = self.current_time.timetuple().tm_yday + decimal_hour / 24
-    self.hour_angle = np.multiply((2 * math.pi / 24),
-                                  np.divide(np.subtract(decimal_hour,
-                                                        self.longitude),
-                                            self.rotation_speed))
+    self.decimal_hour = (self.current_time.hour +
+                         self.current_time.minute / 60.0 +
+                         self.current_time.second / 3600.0)
+    self.decimal_day = (self.current_time.timetuple().tm_yday +
+                        self.decimal_hour / 24)
+    self.hour_angle = np.radians(self.longitude +
+                                 (self.decimal_hour - self.noon_offset) *
+                                 self.rotation_speed)
     self.solar_declination = (
         math.asin(math.sin(
             math.radians(self.inclination_deg) *
                         math.cos(2 * math.pi *
-                                 (decimal_day + self.winter_solstice_offset) /
+                                 (self.decimal_day +
+                                  self.winter_solstice_offset) /
                                  self.length_of_year_in_days +
                                  2 * self.ecc *
                                  math.sin(2 * math.pi *
-                                          (decimal_day + self.perigee_offset) /
+                                          (self.decimal_day +
+                                           self.perigee_offset) /
                                           self.length_of_year_in_days) ))))
     
   def rotate(self, user):
-    for j in range(1, 3):
-#    while True:
+    for j in range(1, 4):
+      self.set_time(self.current_time + timedelta(0,user.timestep / 2.0))
       self.shine(user)
+      self.set_time(self.current_time + timedelta(0,user.timestep / 2.0))
 #      self.convect(user)
 #      self.glow(user)
       self.display(user)
-#       if user.paused:
-#        with open('planet.txt', 'w') as outfile:
-#          json.dump(jsonData, outfile, sort_keys = True,
-#                    indent = 4, ensure_ascii=False)
         
   def display(self, user):
-    print self.current_time
+    print '\n', self.current_time, '\n'
     self.oldlat = 90
     for i in range(self.num_cells):
       if self.latitude[i] != self.oldlat:
@@ -85,5 +86,5 @@ class Planet:
                            np.sin(np.radians(self.latitude)))) )
     np.clip(self.solar_elevation, 0, math.pi, out=self.solar_elevation)
     self.solar_energy = np.multiply(
-        (self.solar_constant * user.timestep * 3600),
+        (self.solar_constant * user.timestep),
         np.sin(self.solar_elevation))

@@ -1,3 +1,3 @@
 class User:
-  timestep = 1
+  timestep = 3600
   paused = False
