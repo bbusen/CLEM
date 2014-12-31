@@ -14,8 +14,7 @@ class Planet:
   perigee_offset = -2
   num_cells = 48
 
-  def __init__(self, name, specified_time):
-    self.name = name
+  def __init__(self, specified_time = current_time):
     self.region_list = []
     self.longitude = np.array([
           0, 0, 120, -120,
@@ -39,19 +38,19 @@ class Planet:
     self.current_time = specified_time
     decimal_hour = (self.current_time.hour + self.current_time.minute * 60 +
                     self.current_time.second * 3600)
-#    decimal_day = self.current_time.timetuple().yday + decimal_hour / 24
-    decimal_day = 164.0
+    decimal_day = self.current_time.timetuple().tm_yday + decimal_hour / 24
     self.hour_angle = np.multiply((2 * math.pi / 24),
                                   np.divide(np.subtract(decimal_hour,
                                                         self.longitude),
                                             self.rotation_speed))
     self.solar_declination = (
-        -math.asin(math.sin(
+        math.asin(math.sin(
             math.radians(self.inclination_deg) *
-                        math.cos(2 *
+                        math.cos(2 * math.pi *
                                  (decimal_day + self.winter_solstice_offset) /
-                                 self.length_of_year_in_days + 2 * self.ecc *
-                                 math.sin(2 *
+                                 self.length_of_year_in_days +
+                                 2 * self.ecc *
+                                 math.sin(2 * math.pi *
                                           (decimal_day + self.perigee_offset) /
                                           self.length_of_year_in_days) ))))
     
@@ -68,6 +67,7 @@ class Planet:
 #                    indent = 4, ensure_ascii=False)
         
   def display(self, user):
+    print self.current_time
     self.oldlat = 90
     for i in range(self.num_cells):
       if self.latitude[i] != self.oldlat:
