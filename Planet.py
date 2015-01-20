@@ -17,6 +17,7 @@ class Planet:
 
   def __init__(self, specified_time = current_time):
     self.region_list = []
+    self.solar_elevation = np.zeros(48)
     self.longitude = np.array([
           0, 0, 120, -120,
           0, 36, 72, 108, 144, 180, -144, -108, -72, -36,
@@ -90,6 +91,16 @@ class Planet:
           [270.9, 0.25, 0.90, 0.10], [273.2, 0.25, 0.99, 0.01],
           [253.2, 0.25, 0.10, 0.90], [238.7, 0.25, 0.01, 0.99],
           [260.9, 0.25, 0.20, 0.80], [214.3, 0.25, 0.02, 0.98]])
+    self.water_albedo = np.array([1.00, # Full reflection at zero sun elevation
+                    0.90, 0.83, 0.75, 0.67, 0.60, 0.53, 0.47, 0.42, 0.38, 0.35,
+                    0.32, 0.30, 0.27, 0.24, 0.21, 0.19, 0.17, 0.16, 0.15, 0.13,
+                    0.12, 0.11, 0.10, 0.10, 0.09, 0.08, 0.08, 0.07, 0.07, 0.06,
+                    0.06, 0.05, 0.05, 0.05, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04,
+                    0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
+                    0.03, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+                    0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+                    0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+                    0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02])
 
   def set_time(self, specified_time):
     self.current_time = specified_time
@@ -144,3 +155,6 @@ class Planet:
     self.solar_energy = np.multiply(
         (self.solar_constant * user.timestep),
         np.sin(self.solar_elevation))
+    self.sea_0[0:48, 1] = self.water_albedo[
+      np.intp(np.rint(np.degrees(self.solar_elevation)))]
+
