@@ -1,0 +1,35 @@
+/* Typography */
+#datamap td {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 11pt;
+	font-weight: 800;
+}
+
+
+
+/* Layout */
+body {
+	background-image: url("ToyEarth.gif");
+	background-repeat: no-repeat;
+}
+
+table {
+	table-layout: fixed;
+	position: fixed;
+	top: 110px;
+	left: 136px;
+}
+
+tr {
+	display: table-row;
+}
+
+td {
+	text-align: center;
+	height: 112px;
+}
+
+/* Color */
+#datamap td {
+	color: #3E3E3F;
+}
